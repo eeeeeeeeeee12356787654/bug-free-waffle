@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emailer</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+<h2>Send an Email</h2>
+<form id="emailForm">
+    <label for="email">Your Email:</label>
+    <input type="text" id="email" name="email" required>
+    
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" required>
+    
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" rows="6" required></textarea>
+    
+    <button type="submit">Send Email</button>
+</form>
+
+<script>
+document.getElementById('emailForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+    
+    // Collect form data
+    const formData = new FormData(this);
+    const requestData = {};
+    
+    for (const [key, value] of formData.entries()) {
+        requestData[key] = value;
+    }
+    
+    // Replace with your server endpoint that handles email sending
+    const endpoint = 'https://supreme-funicular-azure.vercel.app/';
+    
+    // Send data to server
+    fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        alert('Email sent successfully!');
+        document.getElementById('emailForm').reset(); // Reset form after successful submission
+    })
+    .catch(error => alert('Error sending email: ' + error.message));
+});
+</script>
+
+</body>
+</html>
